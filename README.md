@@ -129,7 +129,7 @@ When using -f, the above commands are equivalent to:
 python -m yolox.tools.train -f exps/default/yolox_s.py -d 8 -b 64 --fp16 -o [--cache]
                                exps/default/yolox_m.py
                                exps/default/yolox_l.py
-                               exps/default/tph-yolox_x.py
+                               exps/default/yolox_x.py
 ```
   
 **Multi Machine Training**

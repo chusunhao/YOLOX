@@ -13,3 +13,12 @@ if __name__ == "__main__":
     inputs = torch.rand(2, 3, 640, 640)
     outputs = model(inputs)
     print("done")
+
+
+    # if None not in m.output_size:
+    #     m_output_size = m.output_size
+    # else:
+    #     m_output_size = list(m.output_size)
+    #     idx = m_output_size.index(None)
+    #     m_output_size[idx] = x[0].shape[2+idx]
+    #     m_output_size = tuple(m_output_size)
