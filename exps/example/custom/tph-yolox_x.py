@@ -1,14 +1,5 @@
 #!/usr/bin/env python3
 # -*- coding:utf-8 -*-
-# Copyright (c) Megvii, Inc. and its affiliates.
-
-import os
-
-from yolox.exp import Exp as MyExp
-
-
-#!/usr/bin/env python3
-# -*- coding:utf-8 -*-
 # Copyright (c) Megvii Inc. All rights reserved.
 
 import os
