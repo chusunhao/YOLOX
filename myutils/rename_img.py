@@ -1,10 +1,8 @@
 import os
 
 # path为批量文件的文件夹的路径
-root_path = './spark_dataset/train_rgb'
-new_path = './spark_dataset/images/train/'
-# root_path = './spark_dataset/validate_rgb'
-# new_path = './spark_dataset/images/val/'
+root_path = './datasets/SPARK/val'
+new_path = './datasets/SPARK/val'
 
 for sat_name in os.listdir(root_path):
 
