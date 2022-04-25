@@ -20,9 +20,9 @@ class Exp(MyExp):
         # detect classes number of model
         self.num_classes = 80
         # factor of model depth
-        self.depth = 1.00
+        self.depth = 0.33
         # factor of model width
-        self.width = 1.00
+        self.width = 0.50
         # activation name. For example, if using "relu", then "silu" will be replaced to "relu".
         self.act = "silu"
 
@@ -69,7 +69,7 @@ class Exp(MyExp):
         # epoch number used for warmup
         self.warmup_epochs = 5
         # max training epoch
-        self.max_epoch = 300
+        self.max_epoch = 100
         # minimum learning rate during warmup
         self.warmup_lr = 0
         self.min_lr_ratio = 0.05
