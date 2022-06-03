@@ -17,33 +17,44 @@ class Exp(MyExp):
         super().__init__()
 
         # ---------------- model config ---------------- #
-        # detect classes number of model
-        self.num_classes = 80
-        # factor of model depth
         self.depth = 0.33
-        # factor of model width
         self.width = 0.50
+        self.exp_name = "saprk_" + os.path.split(os.path.realpath(__file__))[1].split(".")[0]
+
+        # Define yourself dataset path
+        self.data_dir = "datasets/SPARK"
+        self.train_ann = "train_labels.json"
+        self.val_ann = "validate_labels.json"
+
+        self.num_classes = 11
+
+        # detect classes number of model
+        # self.num_classes = 80
+        # factor of model depth
+        # self.depth = 0.33
+        # factor of model width
+        # self.width = 0.50
         # activation name. For example, if using "relu", then "silu" will be replaced to "relu".
         self.act = "silu"
 
         # ---------------- dataloader config ---------------- #
         # set worker to 4 for shorter dataloader init time
         # If your training process cost many memory, reduce this value.
-        self.data_num_workers = 4
+        # self.data_num_workers = 4
         self.input_size = (640, 640)  # (height, width)
         # Actual multiscale ranges: [640 - 5 * 32, 640 + 5 * 32].
         # To disable multiscale training, set the value to 0.
         self.multiscale_range = 5
         # You can uncomment this line to specify a multiscale range
         # self.random_size = (14, 26)
-        # dir of dataset images, if data_dir is None, this project will use `datasets` dir
-        self.data_dir = None
-        # name of annotation file for training
-        self.train_ann = "instances_train2017.json"
-        # name of annotation file for evaluation
-        self.val_ann = "instances_val2017.json"
-        # name of annotation file for testing
-        self.test_ann = "instances_test2017.json"
+        # # dir of dataset images, if data_dir is None, this project will use `datasets` dir
+        # self.data_dir = None
+        # # name of annotation file for training
+        # self.train_ann = "instances_train2017.json"
+        # # name of annotation file for evaluation
+        # self.val_ann = "instances_val2017.json"
+        # # name of annotation file for testing
+        # self.test_ann = "instances_test2017.json"
 
         # --------------- transform config ----------------- #
         # prob of applying mosaic aug
@@ -66,10 +77,16 @@ class Exp(MyExp):
         self.shear = 2.0
 
         # --------------  training config --------------------- #
+        self.max_epoch = 5
+        self.data_num_workers = 4
+        self.eval_interval = 1
+        self.warmup_epochs = 1
+        self.no_aug_epochs = 2
+
         # epoch number used for warmup
-        self.warmup_epochs = 5
+        # self.warmup_epochs = 5
         # max training epoch
-        self.max_epoch = 300
+        # self.max_epoch = 300
         # minimum learning rate during warmup
         self.warmup_lr = 0
         self.min_lr_ratio = 0.05
@@ -78,7 +95,7 @@ class Exp(MyExp):
         # name of LRScheduler
         self.scheduler = "yoloxwarmcos"
         # last #epoch to close augmention like mosaic
-        self.no_aug_epochs = 15
+        # self.no_aug_epochs = 15
         # apply EMA during training
         self.ema = True
 
@@ -91,12 +108,12 @@ class Exp(MyExp):
         self.print_interval = 10
         # eval period in epoch, for example,
         # if set to 1, model will be evaluate after every epoch.
-        self.eval_interval = 10
+        # self.eval_interval = 10
         # save history checkpoint or not.
         # If set to False, yolox will only save latest and best ckpt.
         self.save_history_ckpt = True
         # name of experiment
-        self.exp_name = os.path.split(os.path.realpath(__file__))[1].split(".")[0]
+        # self.exp_name = os.path.split(os.path.realpath(__file__))[1].split(".")[0]
 
         # -----------------  testing config ------------------ #
         # output image size during evaluation/test
@@ -108,7 +125,7 @@ class Exp(MyExp):
         self.nmsthre = 0.65
 
     def get_model(self):
-        from yolox.models import YOLOX, YOLOPAFPN, YOLOXHead, YOLOPAFPN_STR_COORDATT
+        from yolox.models import YOLOX, YOLOPAFPN, YOLOXHead, YOLOPAFPN_COORDATT
 
         def init_yolo(M):
             for m in M.modules():
@@ -119,7 +136,7 @@ class Exp(MyExp):
         if getattr(self, "model", None) is None:
             in_channels = [256, 512, 1024]
             # backbone = YOLOPAFPN(self.depth, self.width, in_channels=in_channels, act=self.act)
-            backbone = YOLOPAFPN_STR_COORDATT(self.depth, self.width, in_channels=in_channels, act=self.act)
+            backbone = YOLOPAFPN_COORDATT(self.depth, self.width, in_channels=in_channels, act=self.act)
             head = YOLOXHead(self.num_classes, self.width, in_channels=in_channels, act=self.act)
             self.model = YOLOX(backbone, head)
 

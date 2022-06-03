@@ -8,5 +8,6 @@ from .losses import IOUloss
 from .yolo_fpn import YOLOFPN
 from .yolo_head import YOLOXHead
 from .yolo_pafpn import YOLOPAFPN
+from .yolo_pafpn_coordatt import YOLOPAFPN_COORDATT
 from .yolo_pafpn_str_coordatt import YOLOPAFPN_STR_COORDATT
 from .yolox import YOLOX

@@ -2,7 +2,7 @@ import torch
 from yolox.exp import get_exp
 
 if __name__ == "__main__":
-    # exp_file = "exps/example/custom/tph-yolox_x.py"
+    # exp_file = "exps/example/custom/tph-yolox_l.py"
     exp_file = "exps/default/yolox_l.py"
     exp = get_exp(exp_file=exp_file, exp_name=None)
     exp.get_model()

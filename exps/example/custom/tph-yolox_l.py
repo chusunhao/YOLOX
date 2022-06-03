@@ -78,7 +78,7 @@ class Exp(MyExp):
         # name of LRScheduler
         self.scheduler = "yoloxwarmcos"
         # last #epoch to close augmention like mosaic
-        self.no_aug_epochs = 10
+        self.no_aug_epochs = 15
         # apply EMA during training
         self.ema = True
 

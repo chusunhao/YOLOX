@@ -73,7 +73,7 @@ def json_convert(csv_path, json_file):
         # image = io.imread(img_path)
 
         height, width = 1024, 1024
-        image = {"file_name": img_path, "height": height, "width": width, "id": image_id}
+        image = {"file_name": img_name, "height": height, "width": width, "id": image_id}
         json_dict["images"].append(image)
 
         category_id = categories[sat_name]
@@ -81,7 +81,8 @@ def json_convert(csv_path, json_file):
         bbox = labels.iloc[idx]['bbox']
         bbox = literal_eval(bbox)
 
-        xmin, ymin, xmax, ymax = bbox
+        ymin, xmin, ymax, xmax = bbox
+        # xmin, ymin, xmax, ymax = bbox
         # xmin = float(xmin)
         # ymin = float(ymin)
         # xmax = float(xmax)
@@ -171,6 +172,10 @@ if __name__ == "__main__":
     # os.makedirs(txt_root)
     # txt_convert(csv_path, txt_root)
 
+    csv_path = "./datasets/SPARK/train_labels.csv"
+    json_file = "./datasets/SPARK/annotations/train_labels.json"
+    json_convert(csv_path, json_file)
+
     csv_path = "./datasets/SPARK/validate_labels.csv"
-    json_file = "./datasets/SPARK/annotations/validate_labels.json"
+    json_file = "./datasets/SPARK/annotations//validate_labels.json"
     json_convert(csv_path, json_file)

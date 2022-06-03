@@ -13,12 +13,13 @@ import torch
 
 from yolox.data.data_augment import ValTransform
 from yolox.data.datasets import COCO_CLASSES
+from spark_classes import SPARK_CLASSES
 from yolox.exp import get_exp
 from yolox.utils import fuse_model, get_model_info, postprocess, vis
 
 IMAGE_EXT = [".jpg", ".jpeg", ".webp", ".bmp", ".png"]
 
-
+# python tools/demo.py image -f exps/example/spark/yolox_s.py -c YOLOX_outputs/saprk_yolox_s/best_ckpt.pth --path datasets/SPARK/validate/AcrimSat_00005_img.png --conf 0.25 --nms 0.45 --tsize 640 --save_result --device gpu
 def make_parser():
     parser = argparse.ArgumentParser("YOLOX Demo!")
     parser.add_argument(
