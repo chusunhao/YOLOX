@@ -107,27 +107,34 @@ def json_convert(csv_path, json_file):
         print(f"{train_or_val} {image_id} Done!")
 
 
-def txt_convert(csv_path, txt_root):
+def txt_convert(csv_path, txt_root, mode='train'):
     """
     csv file convert to json file of coco dataset
     :param csv_path: path
     :param json_file: path
     :return: none
     """
-    categories = {'AcrimSat': 1, 'Aquarius': 2, 'Aura': 3, 'Calipso': 4, 'Cloudsat': 5, 'CubeSat': 6,
-                  'Debris': 7, 'Jason': 8, 'Sentinel-6': 9, 'Terra': 10, 'TRMM': 11}
-
+    categories = dict()
+    img_list = []
+    num_category = 0
 
     labels = pd.read_csv(csv_path)
     images_num = len(labels)  # 文件数
     for idx in range(images_num):
         image_id = idx + 1
         sat_name = labels.iloc[idx]['class']
-        img_name = labels.iloc[idx]['image']
+        if sat_name in categories.keys():
+            pass
+        else:
+            num_category += 1
+            categories[sat_name] = num_category
 
-        index = img_name.split('_')[1]
+        img_name = labels.iloc[idx]['filename']
+        img_list.append(img_name)
 
-        new_label_file = os.path.join(txt_root, sat_name + '_' + index + '_img.txt')
+        # index = img_name.split('_')[1]
+
+        new_label_file = os.path.join(txt_root, img_name.split('.')[0] + '.txt')
 
         if os.path.exists(new_label_file):
             pass
@@ -161,22 +168,24 @@ def txt_convert(csv_path, txt_root):
 
             print(f"image {image_id} Done!")
 
+    classes_path = "./datasets/SPARK2022_YOLOv5/classes.json"
+    if not os.path.exists(classes_path):
+        with open(classes_path, 'w') as f:
+            json.dump(categories, f)
+
+    imglist_path = f"./datasets/SPARK2022_YOLOv5/{mode}.txt"
+    if not os.path.exists(imglist_path):
+        with open(imglist_path, 'w') as f:
+            f.writelines('\n'.join(img_list))
+
 
 if __name__ == "__main__":
     csv_path = "./datasets/SPARK2022/train.csv"
-    txt_root = "./datasets/SPARK2022/labels/train"
-    os.makedirs(txt_root)
-    txt_convert(csv_path, txt_root)
+    txt_root = "./datasets/SPARK2022_YOLOv5/labels/train"
+    # os.makedirs(txt_root)
+    txt_convert(csv_path, txt_root, mode='train')
 
     csv_path = "./datasets/SPARK2022/val.csv"
-    txt_root = "./datasets/SPARK2022/labels/val"
-    os.makedirs(txt_root)
-    txt_convert(csv_path, txt_root)
-
-    # csv_path = "./datasets/SPARK/train_labels.csv"
-    # json_file = "./datasets/SPARK/annotations/train_labels.json"
-    # json_convert(csv_path, json_file)
-    #
-    # csv_path = "./datasets/SPARK/validate_labels.csv"
-    # json_file = "./datasets/SPARK/annotations//validate_labels.json"
-    # json_convert(csv_path, json_file)
+    txt_root = "./datasets/SPARK2022_YOLOv5/labels/val"
+    # os.makedirs(txt_root)
+    txt_convert(csv_path, txt_root, mode='val')
