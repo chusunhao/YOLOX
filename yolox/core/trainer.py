@@ -12,6 +12,7 @@ from torch.nn.parallel import DistributedDataParallel as DDP
 from torch.utils.tensorboard import SummaryWriter
 
 from yolox.data import DataPrefetcher
+from yolox.exp import Exp
 from yolox.utils import (
     MeterBuffer,
     ModelEMA,
@@ -33,7 +34,7 @@ from yolox.utils import (
 
 
 class Trainer:
-    def __init__(self, exp, args):
+    def __init__(self, exp: Exp, args):
         # init function only defines some basic attr, other attrs like model, optimizer are built in
         # before_train methods.
         self.exp = exp
@@ -182,7 +183,7 @@ class Trainer:
                 wandb_params = dict()
                 for k, v in zip(self.args.opts[0::2], self.args.opts[1::2]):
                     if k.startswith("wandb-"):
-                        wandb_params.update({k.lstrip("wandb-"): v})
+                        wandb_params.update({k[len("wandb-"):]: v})
                 self.wandb_logger = WandbLogger(config=vars(self.exp), **wandb_params)
             else:
                 raise ValueError("logger must be either 'tensorboard' or 'wandb'")
